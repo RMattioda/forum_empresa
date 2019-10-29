@@ -12,6 +12,8 @@ import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class User implements Serializable{
 	private static final long serialVersionUID = 3528432954270048061L;
@@ -20,6 +22,7 @@ public class User implements Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer identity;
 	
+	@JsonIgnore
 	@Column
 	@NotEmpty(message="Nome de usuário inválido")
 	@Length(min=6, max=12)

@@ -16,7 +16,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.empresas.forum.entity.Post;
 import com.empresas.forum.service.PostService;
 
-@RestController(value = "posts")
+@RestController
+@RequestMapping(value = "/posts")
 public class PostResource {
 	
 	@Autowired
@@ -37,7 +38,7 @@ public class PostResource {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> newPost(@Valid @RequestBody Post post){
+	public ResponseEntity<Void> newPost(@RequestBody Post post){
 		
 		post = postService.insert(post); 
 		
