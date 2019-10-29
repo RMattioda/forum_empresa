@@ -1,10 +1,13 @@
 package com.empresas.forum.service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.empresas.forum.dto.PostDto;
 import com.empresas.forum.entity.Post;
 import com.empresas.forum.repository.PostRepository;
 import com.empresas.forum.service.exception.ObjectNotFoundException;
@@ -22,7 +25,24 @@ public class PostService {
 				"Post não encontrado! Id: " +id + ", Tipo: " + Post.class.getName()));
 	}
 	
+	public List<Post> findAll(){
+		return postRepo.findAll().stream()
+				.sorted((o1, o2) -> o1.getPostDate().compareTo(o2.getPostDate()))
+				.collect(Collectors.toList());
+	}
+	
+	
 	public Post insert(Post post) {
 		return postRepo.save(post);
+	}
+	
+	public PostDto fromDto(Post post) {
+		PostDto postDto = new PostDto();
+		postDto.setAuthor(post.getAuthor());
+		postDto.setTitle(post.getTitle());
+		postDto.setBody(post.getBody());
+		postDto.setPostDate(post.getPostDate());
+		postDto.setComments(post.getComments());
+		return postDto;
 	}
 }

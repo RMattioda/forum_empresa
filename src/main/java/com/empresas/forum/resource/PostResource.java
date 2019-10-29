@@ -1,6 +1,7 @@
 package com.empresas.forum.resource;
 
 import java.net.URI;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.empresas.forum.dto.PostDto;
 import com.empresas.forum.entity.Post;
 import com.empresas.forum.service.PostService;
 
@@ -24,21 +26,24 @@ public class PostResource {
 	private PostService postService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<Post> getPost(){
+	public ResponseEntity<List<Post>> getPosts(){
 		
-		return null;
+		List<Post> allPosts = postService.findAll();
+		
+		return ResponseEntity.ok(allPosts);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
-	public ResponseEntity<Post> getPostById(@PathVariable Integer id){
+	public ResponseEntity<PostDto> getPostById(@PathVariable Integer id){
 		
 		Post post = postService.findById(id);
+		PostDto postDto = postService.fromDto(post);
 		
-		return ResponseEntity.ok(post);
+		return ResponseEntity.ok(postDto);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> newPost(@RequestBody Post post){
+	public ResponseEntity<Void> newPost(@Valid @RequestBody Post post){
 		
 		post = postService.insert(post); 
 		
