@@ -28,8 +28,16 @@ public class Comment implements Serializable{
 	private String commentary;
 	
 	@Column
-	private LocalDateTime postDate;
+	private LocalDateTime postDate = LocalDateTime.now();
 	
+	public void setIdentity(Integer identity) {
+		this.identity = identity;
+	}
+
+	public Integer getIdentity() {
+		return identity;
+	}
+
 	public User getAuthor() {
 		return author;
 	}

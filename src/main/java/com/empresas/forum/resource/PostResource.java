@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.empresas.forum.dto.PostDto;
+import com.empresas.forum.entity.Comment;
 import com.empresas.forum.entity.Post;
+import com.empresas.forum.service.CommentService;
 import com.empresas.forum.service.PostService;
 
 @RestController
@@ -24,6 +26,9 @@ public class PostResource {
 	
 	@Autowired
 	private PostService postService;
+	
+	@Autowired
+	private CommentService commentService;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<Post>> getPosts(){
@@ -34,12 +39,11 @@ public class PostResource {
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
-	public ResponseEntity<PostDto> getPostById(@PathVariable Integer id){
+	public ResponseEntity<Post> getPostById(@PathVariable Integer id){
 		
 		Post post = postService.findById(id);
-		PostDto postDto = postService.fromDto(post);
 		
-		return ResponseEntity.ok(postDto);
+		return ResponseEntity.ok(post);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
@@ -49,6 +53,20 @@ public class PostResource {
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 					.path("/{id}").buildAndExpand(post.getIdentity()).toUri();
+		
+		return ResponseEntity.created(uri).build();
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/{id}")
+	public ResponseEntity<Void> newComment(@Valid @RequestBody Comment comment,
+						@PathVariable Integer id){
+		
+		Post post = postService.findById(id);
+		comment = commentService.insert(comment); 
+		postService.insertComment(post, comment);
+		
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+					.path("/comment/{id}").buildAndExpand(comment.getIdentity()).toUri();
 		
 		return ResponseEntity.created(uri).build();
 	}

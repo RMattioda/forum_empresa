@@ -2,6 +2,7 @@ package com.empresas.forum.entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class Post implements Serializable{
 	private User author;
 	
 	@Column
-	private LocalDateTime postDate = LocalDateTime.now();
+	private LocalDateTime postDate;
 	
 	@ManyToMany
 	@JoinTable(name = "post_comments",
@@ -88,7 +89,7 @@ public class Post implements Serializable{
 	}
 
 	public void setPostDate(LocalDateTime postDate) {
-		this.postDate = postDate;
+		this.postDate.atZone(ZoneId.systemDefault());
 	}
 
 	public List<Comment> getComments() {

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.empresas.forum.dto.PostDto;
+import com.empresas.forum.entity.Comment;
 import com.empresas.forum.entity.Post;
 import com.empresas.forum.repository.PostRepository;
 import com.empresas.forum.service.exception.ObjectNotFoundException;
@@ -36,13 +37,15 @@ public class PostService {
 		return postRepo.save(post);
 	}
 	
-	public PostDto fromDto(Post post) {
-		PostDto postDto = new PostDto();
-		postDto.setAuthor(post.getAuthor());
-		postDto.setTitle(post.getTitle());
-		postDto.setBody(post.getBody());
-		postDto.setPostDate(post.getPostDate());
-		postDto.setComments(post.getComments());
-		return postDto;
+	public void insertComment(Post post, Comment comment) {
+		List<Comment> postComments = getComments(post);
+		postComments.add(comment);
+		post.setComments(postComments);
+		postRepo.save(post);
 	}
+	
+	private List<Comment> getComments(Post post) {
+		return post.getComments();
+	}
+	
 }
