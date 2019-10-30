@@ -64,9 +64,14 @@ public class PostResource {
 		comment = commentService.insert(comment); 
 		postService.insertComment(post, comment);
 		
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-					.path("/comment/{id}").buildAndExpand(comment.getIdentity()).toUri();
+		return ResponseEntity.ok().build();
+	}
+	
+	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
+	private ResponseEntity<Void> deletePost(@PathVariable Integer id){
 		
-		return ResponseEntity.created(uri).build();
+		postService.deletePost(id); 
+		
+		return ResponseEntity.noContent().build();
 	}
 }

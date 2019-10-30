@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.empresas.forum.dto.PostDto;
 import com.empresas.forum.entity.Comment;
 import com.empresas.forum.entity.Post;
 import com.empresas.forum.repository.PostRepository;
@@ -42,6 +41,10 @@ public class PostService {
 		postComments.add(comment);
 		post.setComments(postComments);
 		postRepo.save(post);
+	}
+	
+	public void deletePost(Integer id) {
+		postRepo.deleteById(id);
 	}
 	
 	private List<Comment> getComments(Post post) {

@@ -13,8 +13,6 @@ import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 public class User implements Serializable{
 	private static final long serialVersionUID = 3528432954270048061L;

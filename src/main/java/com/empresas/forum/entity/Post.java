@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -47,7 +48,7 @@ public class Post implements Serializable{
 	@Column
 	private LocalDateTime postDate;
 	
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "post_comments",
 			joinColumns = @JoinColumn(name="post_id"),
 			inverseJoinColumns = @JoinColumn(name = "comment_id"))
