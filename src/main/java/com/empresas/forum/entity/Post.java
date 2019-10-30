@@ -1,6 +1,7 @@
 package com.empresas.forum.entity;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class Post implements Serializable{
 	private User author;
 	
 	@Column
-	private LocalDateTime postDate;
+	private LocalDateTime postDate = getIntant();
 	
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "post_comments",
@@ -131,5 +132,8 @@ public class Post implements Serializable{
 		return Objects.equals(identity, other.identity);
 	}
 	
+	private LocalDateTime getIntant() {
+		return LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault());
+	}
 	
 }
