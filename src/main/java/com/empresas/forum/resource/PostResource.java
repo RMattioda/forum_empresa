@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.empresas.forum.dto.PostDto;
 import com.empresas.forum.entity.Comment;
 import com.empresas.forum.entity.Post;
 import com.empresas.forum.service.CommentService;

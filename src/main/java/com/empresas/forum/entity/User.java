@@ -1,6 +1,7 @@
 package com.empresas.forum.entity;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,10 +23,9 @@ public class User implements Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer identity;
 	
-	@JsonIgnore
 	@Column
 	@NotEmpty(message="Nome de usuário inválido")
-	@Length(min=6, max=12)
+	@Length(min=6, max=12, message = "Username deve ter entre 6 e 12 caracteres")
 	private String username;
 	
 	@Column
@@ -34,9 +34,17 @@ public class User implements Serializable{
 	
 	@Column
 	@NotEmpty(message="Senha não pode ser vazia")
-	@Length(min=6, max=12, message="Senha deve possuir entre 6 e 12 caracteres")
+	@Length(min=6, message="Senha deve possuir mínimo 6 caracteres")
 	private String password;
 
+	public Integer getIdentity() {
+		return identity;
+	}
+
+	public void setIdentity(Integer identity) {
+		this.identity = identity;
+	}
+	
 	public String getUsername() {
 		return username;
 	}
@@ -59,6 +67,23 @@ public class User implements Serializable{
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(identity);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		return Objects.equals(identity, other.identity);
 	}
 	
 	
