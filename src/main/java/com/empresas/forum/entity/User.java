@@ -1,6 +1,7 @@
 package com.empresas.forum.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -12,9 +13,12 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
-public class User implements Serializable{
+public class User implements Serializable, UserDetails{
 	private static final long serialVersionUID = 3528432954270048061L;
 
 	@Id
@@ -83,6 +87,30 @@ public class User implements Serializable{
 		User other = (User) obj;
 		return Objects.equals(identity, other.identity);
 	}
-	
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return AuthorityUtils.createAuthorityList("USER_ROLE");
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
 	
 }
