@@ -3,13 +3,17 @@ package com.empresas.forum.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import com.empresas.forum.security.JwtAuthenticationFilter;
+import com.empresas.forum.security.JwtAuthorizationFilter;
+import com.empresas.forum.security.JwtUtil;
 
 @Configuration
 @EnableWebSecurity
@@ -18,16 +22,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Autowired
 	private UserDetailsService userDetailService;
 	
-	private static final String[] PUBLIC_MATCHERS = {
-		"/posts/**"	
-	};
+	@Autowired
+	private JwtUtil jwtUtil;
+	
+//	private static final String[] PUBLIC_MATCHERS = {
+//		"/posts/**"	
+//	};
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception{
-		http.csrf().disable();
+		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+			.and()
+			.csrf().disable(); 
+		
 		http.authorizeRequests()
-			.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS).permitAll();
-		http.httpBasic().disable();
+			.antMatchers("/login**")
+			.permitAll()
+			.and()
+		.authorizeRequests()
+			.anyRequest()
+			.authenticated();
+		
+		http.addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtUtil));
+		
+		http.addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtUtil, userDetailService));
 	}
 	
 	@Override

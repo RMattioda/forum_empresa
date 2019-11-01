@@ -8,6 +8,9 @@ public class CredentialsDto implements Serializable{
 	private String email;
 	private String password;
 	
+	public CredentialsDto() {
+	}
+	
 	public CredentialsDto(String email, String password) {
 		this.email = email;
 		this.password = password;
