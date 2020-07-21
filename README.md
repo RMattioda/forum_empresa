@@ -1,4 +1,4 @@
-# PROJETO PARA FÓRUM DE DÚVIDAS DI UNO
+# PROJETO PARA FÓRUM
 
 Este projeto visa esclarecer dúvidas recorrentes de desenvolvedores da empresa
 armazenando respostas para perguntas frequentes para que continuem as boas
